@@ -1,0 +1,50 @@
+diff --git a/Foundation/src/Thread_POSIX.cpp b/Foundation/src/Thread_POSIX.cpp
+index 7f01d17c7..7578501fa 100644
+--- a/Foundation/src/Thread_POSIX.cpp
++++ b/Foundation/src/Thread_POSIX.cpp
+@@ -38,7 +38,10 @@
+ #endif
+ 
+ #if POCO_OS == POCO_OS_LINUX || POCO_OS == POCO_OS_ANDROID || POCO_OS == POCO_OS_FREE_BSD
++#	ifdef __MVS__
++#	else
+ #	include <sys/prctl.h>
++#	endif
+ #endif
+ 
+ #if POCO_OS == POCO_OS_LINUX
+@@ -52,7 +55,10 @@
+ 
+ 
+ #if POCO_OS == POCO_OS_LINUX || POCO_OS == POCO_OS_ANDROID || POCO_OS == POCO_OS_FREE_BSD
++#	ifdef __MVS__
++#	else
+ #	include <sys/prctl.h>
++#	endif
+ #endif
+ 
+ //
+@@ -102,16 +108,21 @@ namespace
+ 		#endif
+ 	#endif // __MAC_OS_X_VERSION_MIN_REQUIRED
+ #else
++#	ifdef __MVS__
++#	else
+ 		prctl(PR_SET_NAME, truncName(threadName).c_str());
++#	endif
+ #endif
+ 	}
+ 
+ 	std::string getThreadName()
+ 	{
+ 		char name[POCO_MAX_THREAD_NAME_LEN + 1]{'\0'};
+-#if POCO_OS == POCO_OS_LINUX || POCO_OS == POCO_OS_ANDROID || POCO_OS == POCO_OS_FREE_BSD
++#ifdef __MVS__
++		pthread_getname_np(pthread_self(), name, POCO_MAX_THREAD_NAME_LEN + 1);
++#elif POCO_OS == POCO_OS_LINUX || POCO_OS == POCO_OS_ANDROID || POCO_OS == POCO_OS_FREE_BSD
+ 		prctl(PR_GET_NAME, name);
+-#else
++#else 
+ 		pthread_getname_np(pthread_self(), name, POCO_MAX_THREAD_NAME_LEN + 1);
+ #endif
+ 		return name;

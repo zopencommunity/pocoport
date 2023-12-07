@@ -1,0 +1,13 @@
+diff --git a/configure b/configure
+index 7d07f8213..503c06a38 100755
+--- a/configure
++++ b/configure
+@@ -277,7 +277,7 @@ while [ $# -ge 1 ]; do
+ 
+ 	*)
+ 		showhelp
+-		exit 1
++		exit 0 
+ 		;;
+ 	esac
+ 

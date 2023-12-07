@@ -1,0 +1,71 @@
+diff --git a/Foundation/include/Poco/Dynamic/VarHolder.h b/Foundation/include/Poco/Dynamic/VarHolder.h
+index 0ae246ab7..cfb886656 100644
+--- a/Foundation/include/Poco/Dynamic/VarHolder.h
++++ b/Foundation/include/Poco/Dynamic/VarHolder.h
+@@ -361,11 +361,18 @@ protected:
+ 
+ 		if (from < 0)
+ 			throw RangeException("Value too small.");
++#ifdef __MVS__
++		checkUpperLimit<typename std::make_unsigned<F>::type, T>(from);
++#else
+ 		checkUpperLimit<std::make_unsigned_t<F>,T>(from);
++#endif
+ 		to = static_cast<T>(from);
+ 	}
+-
++#ifdef __MVS__
++	template <typename F, typename T, typename std::enable_if<std::is_floating_point<F>::value, bool>::type = true>
++#else		
+ 	template <typename F, typename T, std::enable_if_t<std::is_floating_point<F>::value, bool> = true>
++#endif
+ 	void convertSignedFloatToUnsigned(const F& from, T& to) const
+ 		/// This function is meant for converting floating point data types to
+ 		/// unsigned integral data types. Negative values can not be converted and if one
+@@ -401,22 +408,33 @@ protected:
+ 	}
+ 
+ private:
+-
++#ifdef __MVS__
++	template <typename F, typename T, typename std::enable_if<std::is_integral<typename std::remove_reference<F>::type>::type::value, bool>::type = true>
++#else	
+ 	template <typename F, typename T, std::enable_if_t<std::is_integral<F>::value, bool> = true>
++#endif
+ 	void checkUpperLimit(const F& from) const
+ 	{
+ 		if (from > std::numeric_limits<T>::max())
+ 			throw RangeException("Value too large.");
+ 	}
+ 
++#ifdef __MVS__
++	template <typename F, typename T, typename std::enable_if<std::is_integral<F>::value, bool>::type = true>
++#else		
+ 	template <typename F, typename T, std::enable_if_t<std::is_integral<F>::value, bool> = true>
++#endif
+ 	void checkLowerLimit(const F& from) const
+ 	{
+ 		if (from < std::numeric_limits<T>::min())
+ 			throw RangeException("Value too small.");
+ 	}
+ 
++#ifdef __MVS__
++	template <typename F, typename T, typename std::enable_if<std::is_floating_point<F>::value, bool>::type = true>
++#else		
+ 	template <typename F, typename T, std::enable_if_t<std::is_floating_point<F>::value, bool> = true>
++#endif
+ 	void checkUpperLimit(const F& from) const
+ 	{
+ 		if (std::is_floating_point<T>::value)
+@@ -432,7 +450,11 @@ private:
+ 		}
+ 	}
+ 
++#ifdef __MVS__
++	template <typename F, typename T, typename std::enable_if<std::is_floating_point<F>::value, bool>::type = true>
++#else		
+ 	template <typename F, typename T, std::enable_if_t<std::is_floating_point<F>::value, bool> = true>
++#endif
+ 	void checkLowerLimit(const F& from) const
+ 	{
+ 		if (std::is_floating_point<T>::value)

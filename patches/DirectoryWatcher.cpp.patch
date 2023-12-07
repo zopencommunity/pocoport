@@ -1,0 +1,60 @@
+diff --git a/Foundation/src/DirectoryWatcher.cpp b/Foundation/src/DirectoryWatcher.cpp
+index 6e72d2f4d..498caa3d8 100644
+--- a/Foundation/src/DirectoryWatcher.cpp
++++ b/Foundation/src/DirectoryWatcher.cpp
+@@ -24,7 +24,7 @@
+ #include "Poco/Event.h"
+ #include "Poco/Exception.h"
+ #include "Poco/Buffer.h"
+-#if POCO_OS == POCO_OS_LINUX || POCO_OS == POCO_OS_ANDROID
++#if POCO_OS == POCO_OS_LINUX || POCO_OS == POCO_OS_ANDROID || defined(__MVS__)
+ 	#include <sys/inotify.h>
+ 	#include <sys/select.h>
+ 	#include <unistd.h>
+@@ -259,8 +259,11 @@ public:
+ 		_fd(-1),
+ 		_stopped(false)
+ 	{
+-		_fd = inotify_init();
++		#ifdef __MVS__
++		#else
++	_fd = inotify_init(); 
+ 		if (_fd == -1) throw Poco::IOException("cannot initialize inotify", errno);
++		#endif
+ 	}
+ 
+ 	~LinuxDirectoryWatcherStrategy()
+@@ -270,6 +273,8 @@ public:
+ 
+ 	void run()
+ 	{
++#ifdef __MVS__
++#else
+ 		int mask = 0;
+ 		if (owner().eventMask() & DirectoryWatcher::DW_ITEM_ADDED)
+ 			mask |= IN_CREATE;
+@@ -293,6 +298,7 @@ public:
+ 				owner().scanError(&owner(), exc);
+ 			}
+ 		}
++#endif
+ 
+ 		Poco::Buffer<char> buffer(4096);
+ 		while (!_stopped)
+@@ -311,6 +317,8 @@ public:
+ 				int i = 0;
+ 				if (n > 0)
+ 				{
++					#ifdef __MVS__
++					#else
+ 					while (n > 0)
+ 					{
+ 						struct inotify_event* pEvent = reinterpret_cast<struct inotify_event*>(buffer.begin() + i);
+@@ -355,6 +363,7 @@ public:
+ 						i += sizeof(inotify_event) + pEvent->len;
+ 						n -= sizeof(inotify_event) + pEvent->len;
+ 					}
++					#endif
+ 				}
+ 			}
+ 		}

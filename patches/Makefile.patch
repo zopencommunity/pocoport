@@ -1,0 +1,31 @@
+diff --git a/Makefile b/Makefile
+index 217637409..e505d4218 100644
+--- a/Makefile
++++ b/Makefile
+@@ -25,7 +25,8 @@ endif
+ #
+ # Determine OS
+ #
+-POCO_HOST_OSNAME = $(shell uname)
++POCO_HOST_OSNAME = Linux 
++
+ ifeq ($(findstring CYGWIN,$(POCO_HOST_OSNAME)),CYGWIN)
+ POCO_HOST_OSNAME = CYGWIN
+ endif
+@@ -33,6 +34,7 @@ endif
+ ifeq ($(findstring MINGW,$(POCO_HOST_OSNAME)),MINGW)
+ POCO_HOST_OSNAME = MinGW
+ endif
++
+ POCO_HOST_OSARCH ?= $(subst /,-,$(shell uname -m | tr ' ' _))
+ 
+ #
+@@ -51,7 +53,7 @@ endif
+ include $(POCO_BASE)/build/config/$(POCO_CONFIG)
+ 
+ #
+-# Determine operating system
++#Determine operating system
+ #
+ ifndef POCO_TARGET_OSNAME
+ OSNAME   := $(POCO_HOST_OSNAME)

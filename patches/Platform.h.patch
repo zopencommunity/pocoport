@@ -1,0 +1,14 @@
+diff --git a/Foundation/include/Poco/Platform.h b/Foundation/include/Poco/Platform.h
+index 71177472a..2e46ab65a 100644
+--- a/Foundation/include/Poco/Platform.h
++++ b/Foundation/include/Poco/Platform.h
+@@ -111,7 +111,8 @@
+ 
+ 
+ #if !defined(POCO_OS)
+-	#error "Unknown Platform."
++	#define POCO_OS_FAMILY_UNIX 1
++	#define POCO_OS POCO_OS_LINUX
+ #endif
+ 
+ 

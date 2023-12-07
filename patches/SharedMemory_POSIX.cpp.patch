@@ -1,0 +1,64 @@
+diff --git a/Foundation/src/SharedMemory_POSIX.cpp b/Foundation/src/SharedMemory_POSIX.cpp
+index edeb4f536..5b8027bf5 100644
+--- a/Foundation/src/SharedMemory_POSIX.cpp
++++ b/Foundation/src/SharedMemory_POSIX.cpp
+@@ -20,14 +20,20 @@
+ #include <sys/mman.h>
+ #include <fcntl.h>
+ #include <unistd.h>
+-
++#ifdef __MVS__
++#include <sys/ipc.h>
++#include <sys/shm.h>
++#endif
+ 
+ namespace Poco {
+ 
+ 
+ SharedMemoryImpl::SharedMemoryImpl(const std::string& name, std::size_t size, SharedMemory::AccessMode mode, const void* addrHint, bool server):
+ 	_size(size),
++	#ifdef __MVS__
++	#else
+ 	_fd(-1),
++	#endif
+ 	_address(0),
+ 	_access(mode),
+ 	_name("/"),
+@@ -40,6 +46,29 @@ SharedMemoryImpl::SharedMemoryImpl(const std::string& name, std::size_t size, Sh
+ 
+ 	_name.append(name);
+ 
++#ifdef __MVS__
++	int _shmid; 
++	key_t key = ftok(_name.c_str(), 1); 
++   	if (key == -1)
++        	throw SystemException("Cannot generate unique key for shared memory", _name);
++	
++	int shmflg = (_server ? IPC_CREAT : 0) | S_IRUSR | S_IWUSR;
++    	if (_access == SharedMemory::AM_WRITE)
++        	shmflg |= S_IWUSR;
++    	else
++        	shmflg |= S_IRUSR;
++
++    	_shmid = shmget(key, size, shmflg);
++    	if (_shmid == -1)
++        	throw SystemException("Cannot create or get shared memory segment", _name);
++
++        _address = shmat(_shmid, addrHint, 0); // '0' for default attach options
++    	if (_address == (void*)-1)
++    	{
++              	shmctl(_shmid, IPC_RMID, NULL); // Mark for deletion
++        	throw SystemException("Cannot attach shared memory segment", _name);
++    	}
++#else
+ 	int flags = _server ? O_CREAT : 0;
+ 	if (_access == SharedMemory::AM_WRITE)
+ 		flags |= O_RDWR;
+@@ -59,6 +88,7 @@ SharedMemoryImpl::SharedMemoryImpl(const std::string& name, std::size_t size, Sh
+ 		::shm_unlink(_name.c_str());
+ 		throw SystemException("Cannot resize shared memory object", _name);
+ 	}
++#endif
+ 	map(addrHint);
+ }
+ 

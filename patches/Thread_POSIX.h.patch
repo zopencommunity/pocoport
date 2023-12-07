@@ -1,0 +1,17 @@
+diff --git a/Foundation/include/Poco/Thread_POSIX.h b/Foundation/include/Poco/Thread_POSIX.h
+index 4d8ef6a5e..5ee484404 100644
+--- a/Foundation/include/Poco/Thread_POSIX.h
++++ b/Foundation/include/Poco/Thread_POSIX.h
+@@ -121,7 +121,11 @@ private:
+ 	struct ThreadData: public RefCountedObject
+ 	{
+ 		ThreadData():
+-			thread(0),
++			#ifdef __MVS__
++    			thread(), 
++    			#else
++    			thread(0),
++    			#endif
+ 			prio(PRIO_NORMAL_IMPL),
+ 			osPrio(),
+ 			policy(SCHED_OTHER),
