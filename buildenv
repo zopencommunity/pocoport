@@ -1,5 +1,7 @@
 export ZOPEN_STABLE_URL="git@github.com:pocoproject/poco.git"
-export ZOPEN_STABLE_DEPS="zoslib comp_xlclang libtool sqlite automake make git cmake openssl"
+export ZOPEN_STABLE_DEPS="zoslib gnulib comp_xlclang libtool sqlite automake make git cmake openssl"
+export ZOPEN_DEV_URL="https://github.com/pocoproject/poco/archive/refs/tags/poco-1.12.5p2-release.tar.gz"
+export ZOPEN_DEV_DEPS="zoslib comp_xlclang libtool sqlite automake make git cmake openssl"
 export ZOPEN_BUILD_LINE="STABLE"
 
 zopen_check_results()

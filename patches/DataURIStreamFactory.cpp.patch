@@ -1,0 +1,115 @@
+diff --git a/Foundation/src/DataURIStreamFactory.cpp b/Foundation/src/DataURIStreamFactory.cpp
+index 37cb0bb3e..4a2bdc7ee 100644
+--- a/Foundation/src/DataURIStreamFactory.cpp
++++ b/Foundation/src/DataURIStreamFactory.cpp
+@@ -1,54 +1,56 @@
+-﻿//
+-// DataURIStreamFactory.cpp
+-//
+-// Library: Foundation
+-// Package: URI
+-// Module:  DataURIStreamFactory
+-//
+-// Copyright (c) 2019, Applied Informatics Software Engineering GmbH.
+-// and Contributors.
+-//
+-// SPDX-License-Identifier:	BSL-1.0
+-//
+-
+-
+-#include "Poco/DataURIStreamFactory.h"
+-#include "Poco/DataURIStream.h"
+-#include "Poco/URI.h"
+-#include "Poco/URIStreamOpener.h"
+-
+-
+-namespace Poco {
+-
+-
+-DataURIStreamFactory::DataURIStreamFactory()
+-{
+-}
+-
+-
+-DataURIStreamFactory::~DataURIStreamFactory()
+-{
+-}
+-
+-
+-std::istream* DataURIStreamFactory::open(const URI& uri)
+-{
+-	poco_assert (uri.getScheme() == "data");
+-
+-	return new DataURIStream(uri);
+-}
+-
+-
+-void DataURIStreamFactory::registerFactory()
+-{
+-	URIStreamOpener::defaultOpener().registerStreamFactory("data", new DataURIStreamFactory);
+-}
+-
+-
+-void DataURIStreamFactory::unregisterFactory()
+-{
+-	URIStreamOpener::defaultOpener().unregisterStreamFactory("data");
+-}
+-
+-
+-} // namespace Poco
++﻿00000000: efbb bf0a 2f2f 204c 6962 7261 7279 3a20  ﻿....Library..
++00000010: 466f 756e 6461 7469 6f6e 0a2f 2f20 5061  Foundation....Pa
++00000020: 636b 6167 653a 2055 5249 0a2f 2f20 4d6f  ckage..URI....Mo
++00000030: 6475 6c65 3a20 2044 6174 6155 5249 5374  dule...DataURISt
++00000040: 7265 616d 4661 6374 6f72 790a 2f2f 0a2f  reamFactory.....
++00000050: 2f20 436f 7079 7269 6768 7420 2863 2920  ..Copyright..c..
++00000060: 3230 3139 2c20 4170 706c 6965 6420 496e  ......Applied.In
++00000070: 666f 726d 6174 6963 7320 536f 6674 7761  formatics.Softwa
++00000080: 7265 2045 6e67 696e 6565 7269 6e67 2047  re.Engineering.G
++00000090: 6d62 482e 0a2f 2f20 616e 6420 436f 6e74  mbH.....and.Cont
++000000a0: 7269 6275 746f 7273 2e0a 2f2f 0a2f 2f20  ributors........
++000000b0: 5350 4458 2d4c 6963 656e 7365 2d49 6465  SPDX.License.Ide
++000000c0: 6e74 6966 6965 723a 0942 534c 2d31 2e30  ntifier..BSL....
++000000d0: 0a2f 2f0a 0a0a 2369 6e63 6c75 6465 2022  .......include..
++000000e0: 506f 636f 2f44 6174 6155 5249 5374 7265  Poco.DataURIStre
++000000f0: 616d 4661 6374 6f72 792e 6822 0a23 696e  amFactory.h...in
++00000100: 636c 7564 6520 2250 6f63 6f2f 4461 7461  clude..Poco.Data
++00000110: 5552 4953 7472 6561 6d2e 6822 0a23 696e  URIStream.h...in
++00000120: 636c 7564 6520 2250 6f63 6f2f 5552 492e  clude..Poco.URI.
++00000130: 6822 0a23 696e 636c 7564 6520 2250 6f63  h...include..Poc
++00000140: 6f2f 5552 4953 7472 6561 6d4f 7065 6e65  o.URIStreamOpene
++00000150: 722e 6822 0a0a 0a6e 616d 6573 7061 6365  r.h....namespace
++00000160: 2050 6f63 6f20 7b0a 0a0a 4461 7461 5552  .Poco.{...DataUR
++00000170: 4953 7472 6561 6d46 6163 746f 7279 3a3a  IStreamFactory..
++00000180: 4461 7461 5552 4953 7472 6561 6d46 6163  DataURIStreamFac
++00000190: 746f 7279 2829 0a7b 0a7d 0a0a 0a44 6174  tory...{.}...Dat
++000001a0: 6155 5249 5374 7265 616d 4661 6374 6f72  aURIStreamFactor
++000001b0: 793a 3a7e 4461 7461 5552 4953 7472 6561  y..~DataURIStrea
++000001c0: 6d46 6163 746f 7279 2829 0a7b 0a7d 0a0a  mFactory...{.}..
++000001d0: 0a73 7464 3a3a 6973 7472 6561 6d2a 2044  .std..istream..D
++000001e0: 6174 6155 5249 5374 7265 616d 4661 6374  ataURIStreamFact
++000001f0: 6f72 793a 3a6f 7065 6e28 636f 6e73 7420  ory..open.const.
++00000200: 5552 4926 2075 7269 290a 7b0a 0970 6f63  URI..uri..{..poc
++00000210: 6f5f 6173 7365 7274 2028 7572 692e 6765  o_assert..uri.ge
++00000220: 7453 6368 656d 6528 2920 3d3d 2022 6461  tScheme.......da
++00000230: 7461 2229 3b0a 0a09 7265 7475 726e 206e  ta......return.n
++00000240: 6577 2044 6174 6155 5249 5374 7265 616d  ew.DataURIStream
++00000250: 2875 7269 293b 0a7d 0a0a 0a76 6f69 6420  .uri...}...void.
++00000260: 4461 7461 5552 4953 7472 6561 6d46 6163  DataURIStreamFac
++00000270: 746f 7279 3a3a 7265 6769 7374 6572 4661  tory..registerFa
++00000280: 6374 6f72 7928 290a 7b0a 0955 5249 5374  ctory...{..URISt
++00000290: 7265 616d 4f70 656e 6572 3a3a 6465 6661  reamOpener..defa
++000002a0: 756c 744f 7065 6e65 7228 292e 7265 6769  ultOpener...regi
++000002b0: 7374 6572 5374 7265 616d 4661 6374 6f72  sterStreamFactor
++000002c0: 7928 2264 6174 6122 2c20 6e65 7720 4461  y..data...new.Da
++000002d0: 7461 5552 4953 7472 6561 6d46 6163 746f  taURIStreamFacto
++000002e0: 7279 293b 0a7d 0a0a 0a76 6f69 6420 4461  ry...}...void.Da
++000002f0: 7461 5552 4953 7472 6561 6d46 6163 746f  taURIStreamFacto
++00000300: 7279 3a3a 756e 7265 6769 7374 6572 4661  ry..unregisterFa
++00000310: 6374 6f72 7928 290a 7b0a 0955 5249 5374  ctory...{..URISt
++00000320: 7265 616d 4f70 656e 6572 3a3a 6465 6661  reamOpener..defa
++00000330: 756c 744f 7065 6e65 7228 292e 756e 7265  ultOpener...unre
++00000340: 6769 7374 6572 5374 7265 616d 4661 6374  gisterStreamFact
++00000350: 6f72 7928 2264 6174 6122 293b 0a7d 0a0a  ory..data....}..
++00000360: 0a7d 202f 2f20 6e61 6d65 7370 6163 6520  .}....namespace.
++00000370: 506f 636f 0a                             Poco.
