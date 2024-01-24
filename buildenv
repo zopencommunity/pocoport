@@ -1,4 +1,4 @@
-# bump: poco-version /POCO_VERSION="(.*)"/ https://pocoproject.org/|re:/Latest.Release:.([\d.]+)/$1/
+# bump: poco-version /POCO_VERSION="(.*)"/ https://pocoproject.org/|re:/Latest.Release:.([\d.]+p?\d?)/$1/
 POCO_VERSION="1.12.5p2"
 
 export ZOPEN_STABLE_URL="git@github.com:pocoproject/poco.git"
