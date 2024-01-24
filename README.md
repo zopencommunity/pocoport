@@ -1,3 +1,5 @@
+[![Automatic version updates](https://github.com/ZOSOpenTools/pocoport/actions/workflows/bump.yml/badge.svg)](https://github.com/ZOSOpenTools/pocoport/actions/workflows/bump.yml)
+
 A collection of C++ class libraries, conceptually similar to the Java Class Library or the .NET Framework.
 Focused on solutions to frequently-encountered practical problems.
 Focused on "internet-age" network-centric applications.
